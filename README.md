@@ -1,7 +1,7 @@
 # Vis.js Network - Build Report
 
 ## Live preview
-[Link](https://master.d1rzjgll2pvzn8.amplifyapp.com/)
+[Link](https://master.d32g0jsy3mix92.amplifyapp.com/)
 
 ## Overview:
 
