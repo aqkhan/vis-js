@@ -290,85 +290,59 @@ let mapManager = initialization("mynetwork", payload, ready, callback);
 function reInitialize() {
     let test = [
         {
-            "termKey": "loan",
-            "ideaRelevance": 0.6543128656662465,
+            "termKey": "lcdtv",
             "edges": [
                 {
-                    "to": "sale"
-                },
-                {
-                    "to": "mortgage"
-                },
-                {
-                    "to": "page"
-                },
-                {
-                    "to": "advisor"
+                    "to": "oledtv"
                 }
-            ]
+            ],
+            "ideaRelevance": 0.1
         },
         {
-            "termKey": "sale",
-            "ideaRelevance": 0.640957918439873,
+            "termKey": "oledtv",
+            "edges": [],
+            "ideaRelevance": 0.2
+        },
+        {
+            "termKey": "backlight",
             "edges": [
                 {
-                    "to": "cart"
-                }
-            ]
-        },
-        {
-            "termKey": "mortgage",
-            "ideaRelevance": 0.5080406486945644,
-            "edges": []
-        },
-        {
-            "termKey": "bajaj",
-            "ideaRelevance": 0.4627889998678985,
-            "edges": []
-        },
-        {
-            "termKey": "page",
-            "ideaRelevance": 0.4559591273750656,
-            "edges": []
-        },
-        {
-            "termKey": "purchase",
-            "ideaRelevance": 0.4464100420237413,
-            "edges": []
-        },
-        {
-            "termKey": "item",
-            "ideaRelevance": 0.44454711159146404,
-            "edges": [
-                {
-                    "to": "advisor"
-                }
-            ]
-        },
-        {
-            "termKey": "cart",
-            "ideaRelevance": 0.4304156098488393,
-            "edges": []
-        },
-        {
-            "termKey": "advisor",
-            "ideaRelevance": 0.317821991685191,
-            "edges": []
-        },
-        {
-            "termKey": "insurance",
-            "ideaRelevance": 0.2609824551752122,
-            "edges": [
-                {
-                    "to": "purchase"
+                    "to": "oledtv"
                 },
                 {
-                    "to": "bajaj"
+                    "to": "filter"
                 },
                 {
-                    "to": "sale"
+                    "to": "quantumdot"
+                },
+                {
+                    "to": "lcdpanel"
+                },
+                {
+                    "to": "diode"
                 }
-            ]
+            ],
+            "ideaRelevance": 0.5
+        },
+        {
+            "termKey": "diode",
+            "edges": [],
+            "ideaRelevance": 0.2
+        },
+        {
+            "termKey": "lcdpanel",
+            "edges": [],
+            "ideaRelevance": 0.1
+        },
+        {
+            "termKey": "quantumdot",
+            "edges": [],
+            "ideaRelevance": 0.1
+        },
+        {
+            "termKey": "filter",
+            "edges": [],
+            "ideaRelevance": 0.3
         }
     ];
 
