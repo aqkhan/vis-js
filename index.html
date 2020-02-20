@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      Circle line
+    </title>
+
+    <style type="text/css">
+      html,
+      body,
+      #mynetwork {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #FAFAFA;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+      }
+
+      #mynetwork {
+        /*height: 500px;*/
+        /*width: 500px;*/
+        height: 170px;
+        width: 220px;
+        border-radius: 0;
+        background: #FAFAFA;
+        box-shadow:  9px 9px 18px #D5D5D5,
+        -9px -9px 18px #FFFFFF;
+        border-left: 10px solid #3ECFD1;
+        outline: none;
+        transition: background-color 0.1s linear;
+      }
+      .buttons{
+        padding-top: 20px;
+      }
+      .buttons button{
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 3px;
+      }
+      #mynetwork:hover{
+        background: #eef7f7; /* Old browsers */
+        background: -moz-linear-gradient(left,  #eef7f7 0%, #dbfbfd 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(left,  #eef7f7 0%,#dbfbfd 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right,  #eef7f7 0%,#dbfbfd 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eef7f7', endColorstr='#dbfbfd',GradientType=1 ); /* IE6-9 */
+
+      }
+    </style>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css" rel="stylesheet" type="text/css"/>
+  </head>
+
+  <body>
+    <div id="mynetwork"></div>
+    <div class="buttons">
+      <button onclick={reInitialize()}>Update dataset</button>
+      <button onclick={reDraw()}>Re draw</button>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+  </body>
+</html>
