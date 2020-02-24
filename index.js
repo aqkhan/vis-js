@@ -7,13 +7,13 @@ function structureData(data) {
     let edges = [];
     try {
         for (let index = 0; index < data.length; index++) {
-            nodes.push({ id: (index + 1), label: data[index].termKey, shape: "circle", margin: 12, color: { background: ColorLuminance(data[index].ideaRelevance) } });
+            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 12, color: { background: ColorLuminance(data[index].ideaRelevance) } });
             temp[data[index].termKey] = (index + 1);
         }
 
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].edges.length; j++) {
-                edges.push({ from: (i + 1), to: temp[data[i].edges[j].to], length: detectEdgeLength(data[i].edges[j].to, data[i].termKey) })
+                edges.push({ from: (i + 1), to: temp[data[i].edges[j].to], length: detectEdgeLength(breakText(data[i].edges[j].to), breakText(data[i].termKey)) })
             }
         }
     } catch (err) {
@@ -25,6 +25,24 @@ function structureData(data) {
         edges: new vis.DataSet(edges),
 
     };
+};
+
+function breakText(text) {
+    let space = null;
+    let main = text.repeat(1);
+    for(let i = 0; i<= main.length; i++ ){
+        if(text[i] === " "){
+            space = i
+        }
+        if(i%9 === 0 && space){
+            if(text[space+1] === " "){
+                space = space + 1;
+            }
+            text = text.replace(text[space], "\n");
+            space = null;
+        }
+    }
+    return text;
 }
 
 function detectEdgeLength(node1, node2) {
@@ -45,7 +63,6 @@ function detectEdgeLength(node1, node2) {
 // callbackFunction: Fired when an interaction with the nodes is registered 
 
 function initialization(id, dataSet, readyCallBack, callbackFunction) {
-
     let main = structureData(dataSet);
     let nodes = main.nodes;
     let edges = main.edges;
@@ -227,7 +244,7 @@ let payload = [
         "termKey": "Nj",
         "edges": [
             {
-                "to": "Parsippany\n Troy Hills"
+                "to": "Parsippany Troy Hills"
             }
         ],
         "ideaRelevance": 1
@@ -236,16 +253,16 @@ let payload = [
         "termKey": "Cranberry Rd",
         "edges": [
             {
-                "to": "Parsippany\n Troy Hills"
+                "to": "Parsippany Troy Hills"
             },
             {
-                "to": "shopping\n experience"
+                "to": "shopping experience"
             }
         ],
         "ideaRelevance": 0.8074446810718884
     },
     {
-        "termKey": "Parsippany\n Troy Hills",
+        "termKey": "Parsippany Troy Hills",
         "edges": [],
         "ideaRelevance": 0.7785994867571947
     },
@@ -253,13 +270,13 @@ let payload = [
         "termKey": "shoppers",
         "edges": [
             {
-                "to": "shopping\n experience"
+                "to": "shopping experience"
             }
         ],
         "ideaRelevance": 0.40760419164479395
     },
     {
-        "termKey": "shopping\n experience",
+        "termKey": "shopping experience",
         "edges": [],
         "ideaRelevance": 0.3451777310089211
     }
