@@ -7,13 +7,13 @@ function structureData(data) {
     let edges = [];
     try {
         for (let index = 0; index < data.length; index++) {
-            nodes.push({ id: (index + 1), label: data[index].termKey, shape: "circle", x: 0, y: 0, margin: 12, color: { background: ColorLuminance(data[index].ideaRelevance) } });
+            nodes.push({ id: (index + 1), label: data[index].termKey, shape: "circle", margin: 12, color: { background: ColorLuminance(data[index].ideaRelevance) } });
             temp[data[index].termKey] = (index + 1);
         }
 
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].edges.length; j++) {
-                edges.push({ from: (i + 1), to: temp[data[i].edges[j].to] })
+                edges.push({ from: (i + 1), to: temp[data[i].edges[j].to], length: detectEdgeLength(data[i].edges[j].to, data[i].termKey) })
             }
         }
     } catch (err) {
@@ -25,6 +25,17 @@ function structureData(data) {
         edges: new vis.DataSet(edges),
 
     };
+}
+
+function detectEdgeLength(node1, node2) {
+    let node = node1.split("\n");
+    let first = node.reduce(function (a, b) { return a.length > b.length ? a : b; });
+    node = node2.split("\n");
+    let second = node.reduce(function (a, b) { return a.length > b.length ? a : b; });
+    let final = first + second;
+    return (5 + (final.length * 9));
+
+
 }
 
 // Initializes the network map
@@ -144,8 +155,6 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         let node = network.body.nodes[selectedNodeId];
         temp = false;
         node.setOptions({
-            borderWidth: 0,
-            borderWidthSelected: 1,
             color: {
                 border: '#09321f'
             },
@@ -211,63 +220,51 @@ function ColorLuminance(lum) {
     }
 }
 // JSON input object
+
+
 let payload = [
     {
-        "termKey": "lcdtv",
+        "termKey": "Nj",
         "edges": [
             {
-                "to": "oledtv"
+                "to": "Parsippany\n Troy Hills"
             }
         ],
-        "ideaRelevance": 0.1
+        "ideaRelevance": 1
     },
     {
-        "termKey": "oledtv",
-        "edges": [],
-        "ideaRelevance": 0.2
-    },
-    {
-        "termKey": "backlight",
+        "termKey": "Cranberry Rd",
         "edges": [
             {
-                "to": "oledtv"
+                "to": "Parsippany\n Troy Hills"
             },
             {
-                "to": "filter"
-            },
-            {
-                "to": "quantumdot"
-            },
-            {
-                "to": "lcdpanel"
-            },
-            {
-                "to": "diode"
+                "to": "shopping\n experience"
             }
         ],
-        "ideaRelevance": 0.5
+        "ideaRelevance": 0.8074446810718884
     },
     {
-        "termKey": "diode",
+        "termKey": "Parsippany\n Troy Hills",
         "edges": [],
-        "ideaRelevance": 0.2
+        "ideaRelevance": 0.7785994867571947
     },
     {
-        "termKey": "lcdpanel",
-        "edges": [],
-        "ideaRelevance": 0.1
+        "termKey": "shoppers",
+        "edges": [
+            {
+                "to": "shopping\n experience"
+            }
+        ],
+        "ideaRelevance": 0.40760419164479395
     },
     {
-        "termKey": "quantumdot",
+        "termKey": "shopping\n experience",
         "edges": [],
-        "ideaRelevance": 0.1
-    },
-    {
-        "termKey": "filter",
-        "edges": [],
-        "ideaRelevance": 0.3
+        "ideaRelevance": 0.3451777310089211
     }
 ];
+
 // Fires when an interaction is registered on a node
 function callback({ type, key }) {
     // console.log("type", type);
@@ -288,65 +285,8 @@ let mapManager = initialization("mynetwork", payload, ready, callback);
 
 // Redraws the map with new dataset
 function reInitialize() {
-    let test = [
-        {
-            "termKey": "lcdtv",
-            "edges": [
-                {
-                    "to": "oledtv"
-                }
-            ],
-            "ideaRelevance": 0.1
-        },
-        {
-            "termKey": "oledtv",
-            "edges": [],
-            "ideaRelevance": 0.2
-        },
-        {
-            "termKey": "backlight",
-            "edges": [
-                {
-                    "to": "oledtv"
-                },
-                {
-                    "to": "filter"
-                },
-                {
-                    "to": "quantumdot"
-                },
-                {
-                    "to": "lcdpanel"
-                },
-                {
-                    "to": "diode"
-                }
-            ],
-            "ideaRelevance": 0.5
-        },
-        {
-            "termKey": "diode",
-            "edges": [],
-            "ideaRelevance": 0.2
-        },
-        {
-            "termKey": "lcdpanel",
-            "edges": [],
-            "ideaRelevance": 0.1
-        },
-        {
-            "termKey": "quantumdot",
-            "edges": [],
-            "ideaRelevance": 0.1
-        },
-        {
-            "termKey": "filter",
-            "edges": [],
-            "ideaRelevance": 0.3
-        }
-    ];
 
-    mapManager = mapManager.updateDataset(readyAgain, test);
+    mapManager = mapManager.updateDataset(readyAgain, payload);
 }
 
 // Redraws the map with current dataset
