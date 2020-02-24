@@ -1,4 +1,5 @@
 
+
 // Re-structure the JSON data input to initialize map
 // Returns a object with network Nodes and Edges
 function structureData(data) {
@@ -7,7 +8,7 @@ function structureData(data) {
     let edges = [];
     try {
         for (let index = 0; index < data.length; index++) {
-            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 12, color: { background: ColorLuminance(data[index].ideaRelevance) } });
+            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { background: ColorLuminance(data[index].ideaRelevance) } });
             temp[data[index].termKey] = (index + 1);
         }
 
@@ -73,6 +74,9 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
     };
     // Vis js initialization params
     let options = {
+        layout: {
+            randomSeed: 3
+        },
         edges: {
             dashes: [1.5, 3],
             hoverWidth: 0.3,
@@ -102,9 +106,8 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
                 background: 'none',
                 strokeWidth: 0,
                 align: 'center'
-            },
+            }
         },
-        // Enable interactions on hover
         interaction: {
             hover: true,
             dragView: false,
@@ -114,8 +117,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
     };
 
     // Initialize network map with vis.Network
-    let network = new vis.Network(container, data);
-    network.setOptions(options);
+    let network = new vis.Network(container, data, options);
     let temp = true;
     // Register drag event on map
     network.on("dragging", function (params) {
