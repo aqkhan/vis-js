@@ -7,7 +7,7 @@ function structureData(data) {
     let edges = [];
     try {
         for (let index = 0; index < data.length; index++) {
-            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { background: ColorLuminance(data[index].ideaRelevance), border: "transparent"  } });
+            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { background: data[index].color, border: "transparent"  } });
             temp[data[index].termKey] = (index + 1);
         }
 
@@ -25,7 +25,29 @@ function structureData(data) {
         edges: new vis.DataSet(edges),
 
     };
-};
+}
+
+function componentToHex(c) {
+    let hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+// Set node colors w.r.t ideaRelevance score
+function addColor(payload) {
+    payload.sort(function (a, b) {
+        return a.ideaRelevance - b.ideaRelevance
+    });
+    for (let index = 0; index < payload.length; index++) {
+        const element = payload[index];
+        element.color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
+    }
+
+    return payload;
+}
 
 function breakText(text) {
     let space = null;
@@ -63,7 +85,7 @@ function detectEdgeLength(node1, node2) {
 // callbackFunction: Fired when an interaction with the nodes is registered
 
 function initialization(id, dataSet, readyCallBack, callbackFunction) {
-    let main = structureData(dataSet);
+    let main = structureData(addColor(dataSet));
     let deNodeId = null;
     let nodes = main.nodes;
     let edges = main.edges;
@@ -247,19 +269,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
     }
 }
 
-// Set node colors w.r.t ideaRelevance score
-function ColorLuminance(lum) {
-    let val = lum * 100;
-    if (val <= 25) {
-        return "#06B8BB";
-    } else if (val <= 50) {
-        return "#117E81";
-    } else if (val <= 75) {
-        return "#117E81";
-    } else {
-        return "#005D5E";
-    }
-}
+
 // JSON input object
 
 
