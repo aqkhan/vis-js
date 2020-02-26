@@ -108,6 +108,11 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
                 align: 'center'
             }
         },
+        physics: {
+            barnesHut: {
+                avoidOverlap: 0.1
+            }
+        },
         interaction: {
             hover: true,
             dragView: false,
@@ -260,44 +265,61 @@ function ColorLuminance(lum) {
 
 let payload = [
     {
-        "termKey": "Nj",
-        "edges": [
-            {
-                "to": "Parsippany Troy Hills"
-            }
-        ],
-        "ideaRelevance": 1
+        "termKey": "pandemic",
+        "ideaRelevance": 1.8041983505786185,
+        "edges": []
     },
     {
-        "termKey": "Cranberry Rd",
+        "termKey": "cough",
+        "ideaRelevance": 1.5607112881742795,
+        "edges": []
+    },
+    {
+        "termKey": "risk",
+        "ideaRelevance": 1.2109021992924294,
+        "edges": []
+    },
+    {
+        "termKey": "health workers",
+        "ideaRelevance": 1.1929760934617457,
         "edges": [
             {
-                "to": "Parsippany Troy Hills"
+                "to": "risk"
+            }
+        ]
+    },
+    {
+        "termKey": "concerns",
+        "ideaRelevance": 0.9402777192395826,
+        "edges": [
+            {
+                "to": "pandemic"
             },
             {
-                "to": "shopping experience"
+                "to": "risk"
+            },
+            {
+                "to": "cough"
             }
-        ],
-        "ideaRelevance": 0.8074446810718884
+        ]
     },
     {
-        "termKey": "Parsippany Troy Hills",
-        "edges": [],
-        "ideaRelevance": 0.7785994867571947
-    },
-    {
-        "termKey": "shoppers",
+        "termKey": "Advice",
+        "ideaRelevance": 0.8787631040179532,
         "edges": [
             {
-                "to": "shopping experience"
+                "to": "concerns"
             }
-        ],
-        "ideaRelevance": 0.40760419164479395
+        ]
     },
     {
-        "termKey": "shopping experience",
-        "edges": [],
-        "ideaRelevance": 0.3451777310089211
+        "termKey": "contact",
+        "ideaRelevance": 0.7750656738915677,
+        "edges": [
+            {
+                "to": "risk"
+            }
+        ]
     }
 ];
 
@@ -316,7 +338,6 @@ function ready() {
 function readyAgain() {
     console.log("ready again");
 }
-
 let mapManager = initialization("mynetwork", payload, ready, callback);
 
 // Redraws the map with new dataset
