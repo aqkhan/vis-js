@@ -38,15 +38,22 @@ function rgbToHex(r, g, b) {
 
 // Set node colors w.r.t ideaRelevance score
 function addColor(payload) {
+    let another = payload.slice();
+    let temp = {};
     payload.sort(function (a, b) {
         return a.ideaRelevance - b.ideaRelevance
     });
+    for (let index = 0; index < another.length; index++) {
+        const element = payload[index];
+        temp[element.termKey] = index;
+    }
     for (let index = 0; index < payload.length; index++) {
         const element = payload[index];
-        element.color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
+        let current = temp[element.termKey];
+        another[current].color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
     }
 
-    return payload;
+    return another;
 }
 
 function breakText(text) {
@@ -97,7 +104,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
     // Vis js initialization params
     let options = {
         layout: {
-            randomSeed: 2
+            randomSeed: 3
         },
         edges: {
             dashes: [1.5, 3],
