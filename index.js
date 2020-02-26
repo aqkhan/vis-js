@@ -123,7 +123,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             },
             font: {
                 color: '#fff',
-                size: 27,
+                size: 30,
                 face: 'arial',
                 background: 'none',
                 strokeWidth: 0,
@@ -175,7 +175,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 30
+                    size: 35
                 }
             });
         }
@@ -194,7 +194,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 27
+                    size: 30
                 }
             });
         }
@@ -247,7 +247,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
                 },
                 font: {
                     color: options.nodes.font.color,
-                    size: 27
+                    size: 30
                 }
             });
         }
