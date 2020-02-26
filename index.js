@@ -38,22 +38,15 @@ function rgbToHex(r, g, b) {
 
 // Set node colors w.r.t ideaRelevance score
 function addColor(payload) {
-    let another = payload.slice();
-    let temp = {};
     payload.sort(function (a, b) {
         return a.ideaRelevance - b.ideaRelevance
     });
-    for (let index = 0; index < another.length; index++) {
-        const element = payload[index];
-        temp[element.termKey] = index;
-    }
     for (let index = 0; index < payload.length; index++) {
         const element = payload[index];
-        let current = temp[element.termKey];
-        another[current].color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
+        element.color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
     }
 
-    return another;
+    return payload;
 }
 
 function breakText(text) {
@@ -130,7 +123,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             },
             font: {
                 color: '#fff',
-                size: 25,
+                size: 27,
                 face: 'arial',
                 background: 'none',
                 strokeWidth: 0,
@@ -201,7 +194,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 25
+                    size: 27
                 }
             });
         }
@@ -254,7 +247,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
                 },
                 font: {
                     color: options.nodes.font.color,
-                    size: 25
+                    size: 27
                 }
             });
         }
