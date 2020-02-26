@@ -1,5 +1,4 @@
 
-
 // Re-structure the JSON data input to initialize map
 // Returns a object with network Nodes and Edges
 function structureData(data) {
@@ -8,7 +7,7 @@ function structureData(data) {
     let edges = [];
     try {
         for (let index = 0; index < data.length; index++) {
-            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { background: ColorLuminance(data[index].ideaRelevance) } });
+            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { background: ColorLuminance(data[index].ideaRelevance), border: "transparent"  } });
             temp[data[index].termKey] = (index + 1);
         }
 
@@ -60,11 +59,12 @@ function detectEdgeLength(node1, node2) {
 // Initializes the network map
 // id: id prop of the html element
 // dataset: JSON data input
-// readyCallBack: Fired when the map is completely drawn on the canvas 
-// callbackFunction: Fired when an interaction with the nodes is registered 
+// readyCallBack: Fired when the map is completely drawn on the canvas
+// callbackFunction: Fired when an interaction with the nodes is registered
 
 function initialization(id, dataSet, readyCallBack, callbackFunction) {
     let main = structureData(dataSet);
+    let deNodeId = null;
     let nodes = main.nodes;
     let edges = main.edges;
     let container = document.getElementById(id);
@@ -80,15 +80,15 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         edges: {
             dashes: [1.5, 3],
             hoverWidth: 0.3,
+            color: "#005D5E",
             font: {
                 strokeWidth: 0.3,
             }
         },
         nodes: {
-            borderWidth: 0,
-            borderWidthSelected: 0,
+            borderWidth: 1,
+            borderWidthSelected: 1,
             color: {
-                border: '#3ECFD1',
                 background: '#3ECFD1',
                 highlight: {
                     border: "#005D5E",
@@ -96,7 +96,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
                 },
                 hover: {
                     background: '#005D5E',
-                    border: '#3ECFD1'
+                    border: '#005D5E'
                 }
             },
             font: {
@@ -118,11 +118,16 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
 
     // Initialize network map with vis.Network
     let network = new vis.Network(container, data, options);
+    // network.setOptions(options);
     let temp = true;
     // Register drag event on map
     network.on("dragging", function (params) {
         let selectedNodeId = params.nodes[0];
         let node = network.body.nodes[selectedNodeId];
+        if(deNodeId !== selectedNodeId){
+            deSelectNode(deNodeId);
+        }
+        deNodeId = selectedNodeId;
         node.setOptions({
             outline: "none",
             borderWidth: 1,
@@ -171,9 +176,13 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
     // Register event for node selection
     network.on("selectNode", function (params) {
         let selectedNodeId = params.nodes[0];
+        deNodeId = selectedNodeId;
         let node = network.body.nodes[selectedNodeId];
         temp = false;
         node.setOptions({
+            outline: "none",
+            borderWidth: 1,
+            borderWidthSelected: 1,
             color: {
                 border: '#09321f'
             },
@@ -190,24 +199,32 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
     });
 
     // Register event for node deselection
-    network.on("deselectNode", function (params) {
-        let deselectedNodeId = params.previousSelection.nodes[0];
-        let node = network.body.nodes[deselectedNodeId];
-        temp = true;
-        node.setOptions({
-            color: {
-                border: options.nodes.color.border
-            },
-            font: {
-                color: options.nodes.font.color
-            }
-        });
+    network.on("deselectNode", function () {
+        // let deselectedNodeId = params.previousSelection.nodes[0];
+        deSelectNode(deNodeId);
+
     });
     if (readyCallBack) {
         setTimeout(function () {
             readyCallBack();
         }, 0);
     }
+
+    deSelectNode = (id) => {
+        let node = network.body.nodes[id];
+        temp = true;
+        if(deNodeId){
+            node.setOptions({
+                color: {
+                    border: "transparent"
+                },
+                font: {
+                    color: options.nodes.font.color,
+                    size: 25
+                }
+            });
+        }
+    };
 
     // Updates the JSON input for map network and redraws/reinitializes the map
     updateDataset = (callBackFunc, newDataSet) => {
