@@ -97,7 +97,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
     // Vis js initialization params
     let options = {
         layout: {
-            randomSeed: 3
+            randomSeed: 2
         },
         edges: {
             dashes: [1.5, 3],
