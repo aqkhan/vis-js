@@ -1,4 +1,3 @@
-
 // Re-structure the JSON data input to initialize map
 // Returns a object with network Nodes and Edges
 function structureData(data) {
@@ -10,7 +9,6 @@ function structureData(data) {
             nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { background: data[index].color, border: "transparent"  } });
             temp[data[index].termKey] = (index + 1);
         }
-
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].edges.length; j++) {
                 edges.push({ from: (i + 1), to: temp[data[i].edges[j].to], length: detectEdgeLength(breakText(data[i].edges[j].to), breakText(data[i].termKey)) })
@@ -19,23 +17,18 @@ function structureData(data) {
     } catch (err) {
         console.log("Invalid json");
     }
-
     return {
         nodes: new vis.DataSet(nodes),
         edges: new vis.DataSet(edges),
-
     };
 }
-
 function componentToHex(c) {
     let hex = c.toString(16);
     return hex.length === 1 ? "0" + hex : hex;
 }
-
 function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
-
 // Set node colors w.r.t ideaRelevance score
 function addColor(payload) {
     payload.sort(function (a, b) {
@@ -45,10 +38,8 @@ function addColor(payload) {
         const element = payload[index];
         element.color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
     }
-
     return payload;
 }
-
 function breakText(text) {
     let space = null;
     let main = text.repeat(1);
@@ -66,7 +57,6 @@ function breakText(text) {
     }
     return text;
 }
-
 function detectEdgeLength(node1, node2) {
     let node = node1.split("\n");
     let first = node.reduce(function (a, b) { return a.length > b.length ? a : b; });
@@ -74,16 +64,12 @@ function detectEdgeLength(node1, node2) {
     let second = node.reduce(function (a, b) { return a.length > b.length ? a : b; });
     let final = first + second;
     return (5 + (final.length * 9));
-
-
 }
-
 // Initializes the network map
 // id: id prop of the html element
 // dataset: JSON data input
 // readyCallBack: Fired when the map is completely drawn on the canvas
 // callbackFunction: Fired when an interaction with the nodes is registered
-
 function initialization(id, dataSet, readyCallBack, callbackFunction) {
     let main = structureData(addColor(dataSet));
     let deNodeId = null;
@@ -123,7 +109,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             },
             font: {
                 color: '#fff',
-                size: 30,
+                size: 45,
                 face: 'arial',
                 background: 'none',
                 strokeWidth: 0,
@@ -140,9 +126,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             dragView: false,
             zoomView: false
         }
-
     };
-
     // Initialize network map with vis.Network
     let network = new vis.Network(container, data, options);
     // network.setOptions(options);
@@ -167,7 +151,6 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             }
         });
     });
-
     // Register hover event on nodes
     network.on("hoverNode", function (params) {
         let selectedNodeId = params.node;
@@ -175,7 +158,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 35
+                    size: 50
                 }
             });
         }
@@ -186,7 +169,6 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             });
         }
     });
-
     // Register event on node blur
     network.on("blurNode", function (params) {
         let selectedNodeId = params.node;
@@ -194,12 +176,11 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 30
+                    size: 45
                 }
             });
         }
     });
-
     // Register event for node selection
     network.on("selectNode", function (params) {
         let selectedNodeId = params.nodes[0];
@@ -224,19 +205,16 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             });
         }
     });
-
     // Register event for node deselection
     network.on("deselectNode", function () {
         // let deselectedNodeId = params.previousSelection.nodes[0];
         deSelectNode(deNodeId);
-
     });
     if (readyCallBack) {
         setTimeout(function () {
             readyCallBack();
         }, 0);
     }
-
     deSelectNode = (id) => {
         let node = network.body.nodes[id];
         temp = true;
@@ -252,7 +230,6 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             });
         }
     };
-
     // Updates the JSON input for map network and redraws/reinitializes the map
     updateDataset = (callBackFunc, newDataSet) => {
         if (newDataSet) {
@@ -260,19 +237,13 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         } else {
             return initialization(id, dataSet, callBackFunc);
         }
-
     }
-
     return {
         updateDataset: updateDataset,
         reDraw: updateDataset
     }
 }
-
-
 // JSON input object
-
-
 let payload = [
     {
         "termKey": "pandemic",
@@ -332,30 +303,24 @@ let payload = [
         ]
     }
 ];
-
 // Fires when an interaction is registered on a node
 function callback({ type, key }) {
     // console.log("type", type);
     // console.log("key", key);
 }
-
 // Fires when the map is ready
 function ready() {
     console.log("ready");
 }
-
 // Fires when the map is redrawn
 function readyAgain() {
     console.log("ready again");
 }
 let mapManager = initialization("mynetwork", payload, ready, callback);
-
 // Redraws the map with new dataset
 function reInitialize() {
-
     mapManager = mapManager.updateDataset(readyAgain, payload);
 }
-
 // Redraws the map with current dataset
 function reDraw() {
     mapManager = mapManager.reDraw(readyAgain);
