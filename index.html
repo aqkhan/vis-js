@@ -6,64 +6,30 @@
       Circle line
     </title>
 
-    <style type="text/css">
-      html,
-      body,
-      #mynetwork {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background: #FAFAFA;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
 
-      }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css" rel="stylesheet" type="text/css"/>
+    <link href="style.css" type="text/css" rel="stylesheet" />
 
-      #mynetwork {
-        /*height: 500px;*/
-        /*width: 500px;*/
-        height: 170px;
-        width: 220px;
-        border-radius: 0;
-        background: #FAFAFA;
-        box-shadow:  9px 9px 18px #D5D5D5,
-        -9px -9px 18px #FFFFFF;
-        border-left: 10px solid #3ECFD1;
-        outline: none;
-        transition: background-color 0.1s linear;
-      }
-      .buttons{
-        padding-top: 20px;
-      }
-      .buttons button{
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 3px;
-      }
-      #mynetwork:hover{
-        background: #eef7f7; /* Old browsers */
-        background: -moz-linear-gradient(left,  #eef7f7 0%, #dbfbfd 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(left,  #eef7f7 0%,#dbfbfd 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to right,  #eef7f7 0%,#dbfbfd 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eef7f7', endColorstr='#dbfbfd',GradientType=1 ); /* IE6-9 */
-
-      }
-    </style>
-
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
-    <link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css" rel="stylesheet" type="text/css"/>
   </head>
 
   <body>
     <div id="mynetwork"></div>
     <div class="buttons">
-      <button onclick={reInitialize()}>Update dataset</button>
+      <button id="updateData">Update dataset</button>
       <button onclick={reDraw()}>Re draw</button>
     </div>
     <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="payload.js"></script>
+
+    <script>
+      let mapManager = initialization(document.getElementById("mynetwork"), payload, ready, callback);
+
+      var payloadUpdate = [{"termKey":"grease","ideaRelevance":1.2382296181306758,"edges":[]},{"termKey":"allergic reactions","ideaRelevance":1.2738586984706075,"edges":[{"to":"skin irritations"},{"to":"allergies"},{"to":"grease"}]},{"termKey":"allergies","ideaRelevance":1.3328124416540958,"edges":[]},{"termKey":"sulfates","ideaRelevance":1.351403153311993,"edges":[]},{"termKey":"sodium carbonate","ideaRelevance":1.6083038745810452,"edges":[{"to":"sulfates"}]},{"termKey":"chlorine bleach","ideaRelevance":1.7547831541663135,"edges":[{"to":"skin irritations"},{"to":"sulfates"}]},{"termKey":"skin irritations","ideaRelevance":1.8792809377324515,"edges":[]}];
+      console.log(mapManager);
+      document.getElementById("updateData").onclick = function() {
+         mapManager.updateDataset(mapManager.network, payloadUpdate);
+      };
+    </script>
   </body>
 </html>

@@ -70,12 +70,10 @@ function detectEdgeLength(node1, node2) {
 // dataset: JSON data input
 // readyCallBack: Fired when the map is completely drawn on the canvas
 // callbackFunction: Fired when an interaction with the nodes is registered
-function initialization(id, dataSet, readyCallBack, callbackFunction) {
+function initialization(container, dataSet, readyCallBack, callbackFunction) {
     let main = structureData(addColor(dataSet));
-    let deNodeId = null;
     let nodes = main.nodes;
     let edges = main.edges;
-    let container = document.getElementById(id);
     let data = {
         nodes: nodes,
         edges: edges
@@ -83,7 +81,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
     // Vis js initialization params
     let options = {
         layout: {
-            randomSeed: 3
+            randomSeed: 5
         },
         edges: {
             dashes: [1.5, 3],
@@ -109,7 +107,7 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             },
             font: {
                 color: '#fff',
-                size: 45,
+                size: 35,
                 face: 'arial',
                 background: 'none',
                 strokeWidth: 0,
@@ -117,28 +115,42 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
             }
         },
         physics: {
+            enabled: true,
             barnesHut: {
                 avoidOverlap: 0.1
+            },
+            maxVelocity: 146,
+            solver: 'forceAtlas2Based',
+            timestep: 0.35,
+            stabilization: {
+                enabled: true,
+                iterations: 1000,
+                updateInterval: 25
             }
         },
         interaction: {
             hover: true,
             dragView: false,
-            zoomView: false
+            zoomView: false,
+            dragNodes:true,
         }
     };
     // Initialize network map with vis.Network
     let network = new vis.Network(container, data, options);
+    network.dataSet = dataSet;
+    network.deNodeId = null;
     // network.setOptions(options);
     let temp = true;
+    network.nodes = main.nodes;
+    network.edges = main.edges;
     // Register drag event on map
     network.on("dragging", function (params) {
         let selectedNodeId = params.nodes[0];
         let node = network.body.nodes[selectedNodeId];
-        if(deNodeId !== selectedNodeId){
-            deSelectNode(deNodeId);
+        if(network.deNodeId !== selectedNodeId){
+            deSelectNode(network.deNodeId);
         }
-        deNodeId = selectedNodeId;
+        network.deNodeId = selectedNodeId;
         node.setOptions({
             outline: "none",
             borderWidth: 1,
@@ -158,14 +170,14 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 50
+                    size: 40
                 }
             });
         }
         if (callbackFunction) {
             callbackFunction({
                 type: "hovered",
-                key: dataSet[(params.node - 1)].termKey
+                key: network.dataSet[(params.node - 1)].termKey
             });
         }
     });
@@ -176,152 +188,84 @@ function initialization(id, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 45
+                    size: 35
                 }
             });
         }
     });
     // Register event for node selection
     network.on("selectNode", function (params) {
-        let selectedNodeId = params.nodes[0];
-        deNodeId = selectedNodeId;
-        let node = network.body.nodes[selectedNodeId];
-        temp = false;
-        node.setOptions({
-            outline: "none",
-            borderWidth: 1,
-            borderWidthSelected: 1,
-            color: {
-                border: '#09321f'
-            },
-            font: {
-                color: '#09321f'
-            }
-        });
-        if (callbackFunction) {
-            callbackFunction({
-                type: "clicked",
-                key: dataSet[(params.nodes[0] - 1)].termKey
-            });
-        }
+        nodeClickEvent(params);
     });
+
+    // Register dragEnd event on map
+    network.on("dragEnd", function (params) {
+        nodeClickEvent(params);
+    });
+
     // Register event for node deselection
     network.on("deselectNode", function () {
         // let deselectedNodeId = params.previousSelection.nodes[0];
-        deSelectNode(deNodeId);
+        deSelectNode(network.deNodeId);
     });
-    if (readyCallBack) {
+    var nodeClickEvent = function(params) {
+      if(params.nodes.length == 0) return;
+      let selectedNodeId = params.nodes[0];
+      network.deNodeId = selectedNodeId;
+      let node = network.body.nodes[selectedNodeId];
+      temp = false;
+      node.setOptions({
+          outline: "none",
+          borderWidth: 1,
+          borderWidthSelected: 1,
+          color: {
+              border: '#09321f'
+          },
+          font: {
+              color: '#09321f'
+          }
+      });
+      if (callbackFunction) {
+          callbackFunction({
+              type: "clicked",
+              key: network.dataSet[(params.nodes[0] - 1)].termKey
+          });
+      }
+    };
+    var deSelectNode = (id) => {
+        let node = network.body.nodes[id];
+        temp = true;
+        if(network.deNodeId){
+          node.setOptions({
+              color: {
+                  border: "transparent"
+              },
+              font: {
+                  color: options.nodes.font.color,
+                  size: 35
+              }
+          });
+        }
+    };
+    // Updates the JSON input for map network and redraws/reinitializes the map
+    var updateDataset = (network, newDataSet) => {
+      let main2 = structureData(addColor(newDataSet));
+      network.dataSet = newDataSet;
+      let data2 = {
+          nodes: main2.nodes,
+          edges: main2.edges
+      };
+      network.setData(data2);
+    }
+    if (typeof readyCallBack === "function") {
         setTimeout(function () {
             readyCallBack();
         }, 0);
     }
-    deSelectNode = (id) => {
-        let node = network.body.nodes[id];
-        temp = true;
-        if(deNodeId){
-            node.setOptions({
-                color: {
-                    border: "transparent"
-                },
-                font: {
-                    color: options.nodes.font.color,
-                    size: 30
-                }
-            });
-        }
-    };
-    // Updates the JSON input for map network and redraws/reinitializes the map
-    updateDataset = (callBackFunc, newDataSet) => {
-        if (newDataSet) {
-            return initialization(id, newDataSet, callBackFunc);
-        } else {
-            return initialization(id, dataSet, callBackFunc);
-        }
-    }
+    network.fit();
     return {
         updateDataset: updateDataset,
-        reDraw: updateDataset
+        reDraw: updateDataset,
+        network,
     }
-}
-// JSON input object
-let payload = [
-    {
-        "termKey": "pandemic",
-        "ideaRelevance": 1.8041983505786185,
-        "edges": []
-    },
-    {
-        "termKey": "cough",
-        "ideaRelevance": 1.5607112881742795,
-        "edges": []
-    },
-    {
-        "termKey": "risk",
-        "ideaRelevance": 1.2109021992924294,
-        "edges": []
-    },
-    {
-        "termKey": "health workers",
-        "ideaRelevance": 1.1929760934617457,
-        "edges": [
-            {
-                "to": "risk"
-            }
-        ]
-    },
-    {
-        "termKey": "concerns",
-        "ideaRelevance": 0.9402777192395826,
-        "edges": [
-            {
-                "to": "pandemic"
-            },
-            {
-                "to": "risk"
-            },
-            {
-                "to": "cough"
-            }
-        ]
-    },
-    {
-        "termKey": "Advice",
-        "ideaRelevance": 0.8787631040179532,
-        "edges": [
-            {
-                "to": "concerns"
-            }
-        ]
-    },
-    {
-        "termKey": "contact",
-        "ideaRelevance": 0.7750656738915677,
-        "edges": [
-            {
-                "to": "risk"
-            }
-        ]
-    }
-];
-// Fires when an interaction is registered on a node
-function callback({ type, key }) {
-    // console.log("type", type);
-    // console.log("key", key);
-}
-// Fires when the map is ready
-function ready() {
-    console.log("ready");
-}
-// Fires when the map is redrawn
-function readyAgain() {
-    console.log("ready again");
-}
-let mapManager = initialization("mynetwork", payload, ready, callback);
-// Redraws the map with new dataset
-function reInitialize() {
-    mapManager = mapManager.updateDataset(readyAgain, payload);
-}
-// Redraws the map with current dataset
-function reDraw() {
-    mapManager = mapManager.reDraw(readyAgain);
 }
