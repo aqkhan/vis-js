@@ -107,7 +107,7 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
             },
             font: {
                 color: '#fff',
-                size: 35,
+                size: 33,
                 face: 'arial',
                 background: 'none',
                 strokeWidth: 0,
@@ -153,7 +153,6 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
         network.deNodeId = selectedNodeId;
         node.setOptions({
             outline: "none",
-            borderWidth: 1,
             borderWidthSelected: 1,
             color: {
                 border: '#09321f'
@@ -188,7 +187,7 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 35
+                    size: 33
                 }
             });
         }
