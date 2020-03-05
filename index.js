@@ -117,7 +117,7 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
         physics: {
             enabled: true,
             forceAtlas2Based: {
-                gravitationalConstant: -70
+                gravitationalConstant: -90
             },
             maxVelocity: 146,
             solver: 'forceAtlas2Based',
@@ -169,7 +169,7 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 40
+                    size: 35
                 }
             });
         }
@@ -195,6 +195,7 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
     // Register event for node selection
     network.on("selectNode", function (params) {
         nodeClickEvent(params);
+
     });
 
     // Register dragEnd event on map
@@ -208,6 +209,7 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
         deSelectNode(network.deNodeId);
     });
     var nodeClickEvent = function(params) {
+
       if(params.nodes.length == 0) return;
       let selectedNodeId = params.nodes[0];
       network.deNodeId = selectedNodeId;
@@ -221,7 +223,8 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
               border: '#09321f'
           },
           font: {
-              color: '#09321f'
+              color: '#09321f',
+
           }
       });
       if (callbackFunction) {
