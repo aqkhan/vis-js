@@ -13,8 +13,10 @@
     flex-direction: column;
 
   }
-
-  #mynetwork {
+.main-div{
+  display: flex;
+}
+  #mynetwork,#mynetwork2,#mynetwork3 {
     /*height: 500px;*/
     /*width: 500px;*/
     height: 170px;
@@ -26,6 +28,7 @@
     border-left: 10px solid #3ECFD1;
     outline: none;
     transition: background-color 0.1s linear;
+    margin: 20px 20px;
   }
   .buttons{
     padding-top: 20px;
