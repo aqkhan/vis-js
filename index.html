@@ -15,8 +15,8 @@
 
   <body>
     <div class="main-div">
-    <div id="mynetwork"></div>
-    <div id="mynetwork2"></div>
+    <!--<div id="mynetwork"></div>-->
+    <!--<div id="mynetwork2"></div>-->
     <div id="mynetwork3"></div>
     </div>
     <div class="buttons">
@@ -28,8 +28,8 @@
 
     <script>
       console.log("payload1", payload1);
-      let mapManager = initialization(document.getElementById("mynetwork"), payload, ready, callback);
-      initialization(document.getElementById("mynetwork2"), payload1, ready, callback);
+//      let mapManager = initialization(document.getElementById("mynetwork"), payload, ready, callback);
+//      initialization(document.getElementById("mynetwork2"), payload1, ready, callback);
       initialization(document.getElementById("mynetwork3"), payload2, ready, callback);
 
       var payloadUpdate = [{"termKey":"grease","ideaRelevance":1.2382296181306758,"edges":[]},{"termKey":"allergic reactions","ideaRelevance":1.2738586984706075,"edges":[{"to":"skin irritations"},{"to":"allergies"},{"to":"grease"}]},{"termKey":"allergies","ideaRelevance":1.3328124416540958,"edges":[]},{"termKey":"sulfates","ideaRelevance":1.351403153311993,"edges":[]},{"termKey":"sodium carbonate","ideaRelevance":1.6083038745810452,"edges":[{"to":"sulfates"}]},{"termKey":"chlorine bleach","ideaRelevance":1.7547831541663135,"edges":[{"to":"skin irritations"},{"to":"sulfates"}]},{"termKey":"skin irritations","ideaRelevance":1.8792809377324515,"edges":[]}];

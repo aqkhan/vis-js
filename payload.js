@@ -126,22 +126,31 @@ let payload1 = [
 // new payload three
 
 let payload2 = [
-    {"termKey":"technology","ideaRelevance":1.340998506163855,
+    {"termKey":"Marketing",
         "edges":[
             {"to":"communication"},
         ]
     },
-
-    {"termKey":"communication","ideaRelevance":1.7262113906400336,
+    {"termKey":"Marketers",
         "edges":[
-            {"to":"traditions"}
+            {"to":"Marketing"},
         ]
     },
-
-    {"termKey":"traditions","ideaRelevance":3.0728061512231197,
-        "edges":[]
-
-    }
+    {"termKey":"Sales",
+        "edges":[
+            {"to":"Marketing"},
+        ]
+    },
+    {"termKey":"CMI",
+        "edges":[
+            {"to":"Marketing"},
+        ]
+    },
+    {"termKey":"Content Promotion",
+        "edges":[
+            {"to":"Marketing"},
+        ]
+    },
 ];
 
 

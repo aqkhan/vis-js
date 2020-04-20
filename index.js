@@ -36,7 +36,8 @@ function addColor(payload) {
     });
     for (let index = 0; index < payload.length; index++) {
         const element = payload[index];
-        element.color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
+        // element.color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
+        element.color = rgbToHex(5, 184 - element.termKey.length * 4, 187 - element.termKey.length * 4);
     }
     return payload;
 }
