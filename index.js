@@ -6,7 +6,7 @@ function structureData(data) {
     let edges = [];
     try {
         for (let index = 0; index < data.length; index++) {
-            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { background: data[index].color, border: "transparent"  } });
+            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { border: "transparent"  } });
             temp[data[index].termKey] = (index + 1);
         }
         for (let i = 0; i < data.length; i++) {
@@ -37,7 +37,8 @@ function addColor(payload) {
     for (let index = 0; index < payload.length; index++) {
         const element = payload[index];
         // element.color = index === 0 ? '#06B8BB' : index === payload.length - 1 ? '#005D5E' : rgbToHex(6, 184 - index * 10, 187 - index * 10);
-        element.color = rgbToHex(5, 184 - element.termKey.length * 4, 187 - element.termKey.length * 4);
+        // element.color = rgbToHex(5, 184 - element.termKey.length * 4, 187 - element.termKey.length * 4);
+        element.color = "blue";
     }
     return payload;
 }
@@ -96,14 +97,14 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
             borderWidth: 1,
             borderWidthSelected: 1,
             color: {
-                background: '#3ECFD1',
+                background: '#99ccff',
                 highlight: {
                     border: "#005D5E",
                     background: '#FAFAFA'
                 },
                 hover: {
-                    background: '#005D5E',
-                    border: '#005D5E'
+                    background: '#7eaeff', // background: '#005D5E',
+                    border: '#7eaeff' // border: '#005D5E'
                 }
             },
             font: {
