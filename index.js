@@ -97,13 +97,13 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
             borderWidth: 1,
             borderWidthSelected: 1,
             color: {
-                background: '#99ccff',
+                background: '#5BBFBA',
                 highlight: {
                     border: "#005D5E",
                     background: '#FAFAFA'
                 },
                 hover: {
-                    background: '#5BBFBA', // background: '#005D5E',
+                    background: '#519a95', // background: '#005D5E',
                     border: '#519a95' // border: '#005D5E'
                 }
             },
