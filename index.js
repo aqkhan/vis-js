@@ -103,8 +103,8 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
                     background: '#FAFAFA'
                 },
                 hover: {
-                    background: '#7eaeff', // background: '#005D5E',
-                    border: '#7eaeff' // border: '#005D5E'
+                    background: '#5BBFBA', // background: '#005D5E',
+                    border: '#519a95' // border: '#005D5E'
                 }
             },
             font: {
