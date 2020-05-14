@@ -6,7 +6,7 @@ function structureData(data) {
     let edges = [];
     try {
         for (let index = 0; index < data.length; index++) {
-            let bdClr = data[index].bgColor;
+            let bdClr = data[index].bubbleColor;
             bdClr = bdClr ? bdClr :'#5BBFBA'
             nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { border: "transparent", background: bdClr, hover: { background: pSBC(-0.4, bdClr), border: pSBC(-0.4, bdClr)  }   } });
             temp[data[index].termKey] = (index + 1);

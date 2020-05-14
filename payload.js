@@ -128,7 +128,7 @@ let payload1 = [
 let payload2 = [
     {
         "termKey":"strategy",
-        "bgColor": "#32c5ff",
+        "bubbleColor": "#32c5ff",
         "edges":[
             {
                 "to":"content marketers",
