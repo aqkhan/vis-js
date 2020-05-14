@@ -126,31 +126,29 @@ let payload1 = [
 // new payload three
 
 let payload2 = [
-    {"termKey":"Marketing",
+    {
+        "termKey":"strategy",
+        "bgColor": "#32c5ff",
         "edges":[
-            {"to":"communication"},
+            {
+                "to":"content marketers",
+                "lineColor": "red",
+            },
         ]
     },
-    {"termKey":"Marketers",
+    {"termKey":"content marketers",
         "edges":[
-            {"to":"Marketing"},
+            {"to":"content marketing"},
         ]
     },
-    {"termKey":"Sales",
+    {"termKey":"content marketing",
         "edges":[
-            {"to":"Marketing"},
+            {"to":"guide"},
         ]
     },
-    {"termKey":"CMI",
-        "edges":[
-            {"to":"Marketing"},
-        ]
-    },
-    {"termKey":"Content Promotion",
-        "edges":[
-            {"to":"Marketing"},
-        ]
-    },
+    {"termKey":"guide",
+        "edges":[]
+    }
 ];
 
 
