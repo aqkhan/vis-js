@@ -7,8 +7,29 @@ function structureData(data) {
     try {
         for (let index = 0; index < data.length; index++) {
             let bdClr = data[index].bubbleColor;
-            bdClr = bdClr ? bdClr :'#5BBFBA'
-            nodes.push({ id: (index + 1), label: breakText(data[index].termKey), shape: "circle", margin: 10, color: { border: "transparent", background: bdClr, hover: { background: pSBC(-0.4, bdClr), border: pSBC(-0.4, bdClr)  }   } });
+            bdClr = bdClr ? bdClr :'#5BBFBA';
+            let textColor = data[index].textColor;
+            textColor = textColor ? textColor : "#fff";
+            let textSize = data[index].textSize;
+            textSize = textSize ? textSize : 33;
+            nodes.push({
+                id: (index + 1),
+                label: breakText(data[index].termKey),
+                shape: "circle",
+                margin: 10,
+                font: {
+                    color: textColor,
+                    size: textSize
+                } ,
+                color: {
+                    border: "transparent",
+                    background: bdClr,
+                    hover: {
+                        background: bdClr === "transparent" ? bdClr :pSBC(-0.4, bdClr),
+                        border: bdClr === "transparent" ? bdClr :pSBC(-0.4, bdClr)
+                    }
+                }
+            });
             temp[data[index].termKey] = (index + 1);
         }
         for (let i = 0; i < data.length; i++) {
@@ -55,13 +76,6 @@ function pSBC(p,c0,c1,l){
     else return"#"+(4294967296+r*16777216+g*65536+b*256+(f?m(a*255):0)).toString(16).slice(1,f?undefined:-2)
 }
 
-function componentToHex(c) {
-    let hex = c.toString(16);
-    return hex.length === 1 ? "0" + hex : hex;
-}
-function rgbToHex(r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
 // Set node colors w.r.t ideaRelevance score
 function addColor(payload) {
     payload.sort(function (a, b) {
@@ -100,6 +114,32 @@ function detectEdgeLength(node1, node2) {
     let final = first + second;
     return (5 + (final.length * 9));
 }
+
+function padZero(str, len) {
+    len = len || 2;
+    let zeros = new Array(len).join('0');
+    return (zeros + str).slice(-len);
+}
+
+function invertColor(hex) {
+    if (hex.indexOf('#') === 0) {
+        hex = hex.slice(1);
+    }
+    // convert 3-digit hex to 6-digits.
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    if (hex.length !== 6) {
+        throw new Error('Invalid HEX color.');
+    }
+    // invert color components
+    let r = (255 - parseInt(hex.slice(0, 2), 16)).toString(16),
+        g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16),
+        b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16);
+    // pad each with zeros and return
+    return '#' + padZero(r) + padZero(g) + padZero(b);
+}
+
 // Initializes the network map
 // id: id prop of the html element
 // dataset: JSON data input
@@ -137,7 +177,7 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
                 }
             },
             font: {
-                color: '#fff',
+                color: '#000',
                 size: 33,
                 face: 'arial',
                 background: 'none',
@@ -196,11 +236,12 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
     // Register hover event on nodes
     network.on("hoverNode", function (params) {
         let selectedNodeId = params.node;
+        let nodeOption = nodes._data[selectedNodeId];
         let node = network.body.nodes[selectedNodeId];
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 35
+                    size: (nodeOption.font.size+2)
                 }
             });
         }
@@ -218,7 +259,7 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
         if (temp) {
             node.setOptions({
                 font: {
-                    size: 33
+                    size: (node.options.font.size-1)
                 }
             });
         }
@@ -239,25 +280,20 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
         // let deselectedNodeId = params.previousSelection.nodes[0];
         deSelectNode(network.deNodeId);
     });
-    var nodeClickEvent = function(params) {
+    let nodeClickEvent = function(params) {
 
-      if(params.nodes.length == 0) return;
+      if(params.nodes.length === 0) return;
       let selectedNodeId = params.nodes[0];
       network.deNodeId = selectedNodeId;
       let node = network.body.nodes[selectedNodeId];
+        let nodeOption = nodes._data[selectedNodeId];
       temp = false;
-      node.setOptions({
-          outline: "none",
-          borderWidth: 1,
-          borderWidthSelected: 1,
-          color: {
-              border: '#09321f'
-          },
-          font: {
-              color: '#09321f',
-
-          }
-      });
+        node.setOptions({
+            font: {
+                size: (nodeOption.font.size+2),
+                color: nodeOption.font.color === "transparent" ? invertColor(nodeOption.font.color) : ""
+            }
+        });
       if (callbackFunction) {
           callbackFunction({
               type: "clicked",
@@ -265,8 +301,9 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
           });
       }
     };
-    var deSelectNode = (id) => {
+    let deSelectNode = (id) => {
         let node = network.body.nodes[id];
+        let nodeOption = nodes._data[id];
         temp = true;
         if(network.deNodeId){
           node.setOptions({
@@ -274,8 +311,8 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
                   border: "transparent"
               },
               font: {
-                  color: options.nodes.font.color,
-                  size: 33
+                  color: nodeOption.font.color,
+                  size: nodeOption.font.size
               }
           });
         }

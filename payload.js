@@ -97,7 +97,8 @@ payload = [
 // new payload two
 
 let payload1 = [
-    {"termKey":"marketing professionals","ideaRelevance":1.340998506163855,
+    {"termKey":"marketing professionals",
+        "ideaRelevance":1.340998506163855,
         "edges":[
             {"to":"promotion"},
         ]
@@ -129,6 +130,8 @@ let payload2 = [
     {
         "termKey":"strategy",
         "bubbleColor": "#32c5ff",
+        "textColor": "#000",
+        "textSize": 20,
         "edges":[
             {
                 "to":"content marketers",
@@ -136,7 +139,11 @@ let payload2 = [
             },
         ]
     },
-    {"termKey":"content marketers",
+    {
+        "termKey":"content marketers",
+        "bubbleColor": "transparent",
+        "textColor": "#000",
+        "textSize": 45,
         "edges":[
             {"to":"content marketing"},
         ]
