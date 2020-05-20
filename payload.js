@@ -129,19 +129,19 @@ let payload1 = [
 let payload2 = [
     {
         "termKey":"strategy",
-        "bubbleColor": "#32c5ff",
-        "textColor": "#000",
-        "textSize": 20,
+        "bubbleColor": "#32c5ff", // Add custom color to circle if no color is defined default #5BBFBA color will be selected
+        "textColor": "#000", // Add text color if no textColor is added default #fff color will be selected.
+        "textSize": 20, // Now you can increase/decrease the size of bubble by adding custom text size.
         "edges":[
             {
                 "to":"content marketers",
-                "lineColor": "red",
+                "lineColor": "red", // You can add custom color to lines.
             },
         ]
     },
     {
         "termKey":"content marketers",
-        "bubbleColor": "transparent",
+        "bubbleColor": "transparent",  // If you want text without bubble just add transparent property to bubble color.
         "textColor": "#000",
         "textSize": 45,
         "edges":[
