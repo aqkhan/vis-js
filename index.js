@@ -6,13 +6,13 @@ function structureData(payload, style) {
     let edges = [];
     try {
         let data = payload;
+        let bdClr = style ? style.bubbleColor : null;
+        bdClr = bdClr ? bdClr :'#5BBFBA';
+        let textColor = style ? style.textColor: null;
+        textColor = textColor ? textColor : "#fff";
+        let textSize = style ? style.textSize : null;
+        textSize = textSize ? textSize : 33;
         for (let index = 0; index < data.length; index++) {
-            let bdClr = style ? style.bubbleColor : null;
-            bdClr = bdClr ? bdClr :'#5BBFBA';
-            let textColor = style ? style.textColor: null;
-            textColor = textColor ? textColor : "#fff";
-            let textSize = style ? style.textSize : null;
-            textSize = textSize ? textSize : 33;
             nodes.push({
                 id: (index + 1),
                 label: breakText(data[index].termKey),
@@ -41,8 +41,7 @@ function structureData(payload, style) {
                     from: (i + 1),
                     color: lineColor,
                     to: temp[data[i].edges[j].to],
-                    length: detectEdgeLength(breakText(data[i].edges[j].to),
-                    breakText(data[i].termKey))
+                    length: bdClr !== "transparent" && detectEdgeLength(breakText(data[i].edges[j].to), breakText(data[i].termKey))
                 })
             }
         }

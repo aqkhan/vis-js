@@ -131,7 +131,7 @@ let style = {
         "textColor": "#000", // Add text color if no textColor is added default #fff color will be selected.
         "textSize": 20, // Now you can increase/decrease the size of bubble by adding custom text size.
         "lineColor": "red", // You can add custom color to lines.
-    };
+};
 
 payload2 = [
     {
