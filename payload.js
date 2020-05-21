@@ -126,37 +126,38 @@ let payload1 = [
 
 // new payload three
 
-let payload2 = [
-    {
-        "termKey":"strategy",
-        "bubbleColor": "#32c5ff", // Add custom color to circle if no color is defined default #5BBFBA color will be selected
+let payload2 = {
+    style: {
+        "bubbleColor": "transparent", // Add custom color to circle if no color is defined default #5BBFBA color will be selected
         "textColor": "#000", // Add text color if no textColor is added default #fff color will be selected.
         "textSize": 20, // Now you can increase/decrease the size of bubble by adding custom text size.
-        "edges":[
-            {
-                "to":"content marketers",
-                "lineColor": "red", // You can add custom color to lines.
-            },
-        ]
+        "lineColor": "red", // You can add custom color to lines.
     },
-    {
-        "termKey":"content marketers",
-        "bubbleColor": "transparent",  // If you want text without bubble just add transparent property to bubble color.
-        "textColor": "#000",
-        "textSize": 45,
-        "edges":[
-            {"to":"content marketing"},
-        ]
-    },
-    {"termKey":"content marketing",
-        "edges":[
-            {"to":"guide"},
-        ]
-    },
-    {"termKey":"guide",
-        "edges":[]
-    }
-];
+    payload: [
+        {
+            "termKey":"strategy",
+            "edges":[
+                {
+                    "to":"content marketers"
+                },
+            ]
+        },
+        {
+            "termKey":"content marketers",
+            "edges":[
+                {"to":"content marketing"},
+            ]
+        },
+        {"termKey":"content marketing",
+            "edges":[
+                {"to":"guide"},
+            ]
+        },
+        {"termKey":"guide",
+            "edges":[]
+        }
+    ]
+};
 
 
 // Fires when an interaction is registered on a node

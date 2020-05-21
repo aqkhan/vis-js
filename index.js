@@ -1,16 +1,17 @@
 // Re-structure the JSON data input to initialize map
 // Returns a object with network Nodes and Edges
-function structureData(data) {
+function structureData(payload, style) {
     let nodes = [];
     let temp = {};
     let edges = [];
     try {
+        let data = payload;
         for (let index = 0; index < data.length; index++) {
-            let bdClr = data[index].bubbleColor;
+            let bdClr = style ? style.bubbleColor : null;
             bdClr = bdClr ? bdClr :'#5BBFBA';
-            let textColor = data[index].textColor;
+            let textColor = style ? style.textColor: null;
             textColor = textColor ? textColor : "#fff";
-            let textSize = data[index].textSize;
+            let textSize = style ? style.textSize : null;
             textSize = textSize ? textSize : 33;
             nodes.push({
                 id: (index + 1),
@@ -33,13 +34,16 @@ function structureData(data) {
             temp[data[index].termKey] = (index + 1);
         }
         for (let i = 0; i < data.length; i++) {
+            let lineColor = style ? style.lineColor : null;
+            lineColor = lineColor ? lineColor : "#000";
             for (let j = 0; j < data[i].edges.length; j++) {
                 edges.push({ 
                     from: (i + 1),
-                    color: data[i].edges[j].lineColor,
+                    color: lineColor,
                     to: temp[data[i].edges[j].to],
                     length: detectEdgeLength(breakText(data[i].edges[j].to),
-                    breakText(data[i].termKey)) })
+                    breakText(data[i].termKey))
+                })
             }
         }
     } catch (err) {
@@ -146,7 +150,8 @@ function invertColor(hex) {
 // readyCallBack: Fired when the map is completely drawn on the canvas
 // callbackFunction: Fired when an interaction with the nodes is registered
 function initialization(container, dataSet, readyCallBack, callbackFunction) {
-    let main = structureData(addColor(dataSet));
+    let main = structureData(addColor(dataSet.payload), dataSet.style);
+    dataSet = dataSet.payload;
     let nodes = main.nodes;
     let edges = main.edges;
     let data = {
@@ -292,6 +297,12 @@ function initialization(container, dataSet, readyCallBack, callbackFunction) {
             font: {
                 size: (nodeOption.font.size+2),
                 color: nodeOption.font.color === "transparent" ? invertColor(nodeOption.font.color) : ""
+            },
+            color: {
+                highlight: {
+                    border: nodeOption.color.background === "transparent" ? nodeOption.color.background : "#005D5E",
+                    background: nodeOption.color.background === "transparent" ? nodeOption.color.background : '#FAFAFA'
+                }
             }
         });
       if (callbackFunction) {
