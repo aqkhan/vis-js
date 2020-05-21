@@ -149,9 +149,8 @@ function invertColor(hex) {
 // dataset: JSON data input
 // readyCallBack: Fired when the map is completely drawn on the canvas
 // callbackFunction: Fired when an interaction with the nodes is registered
-function initialization(container, dataSet, readyCallBack, callbackFunction) {
-    let main = structureData(addColor(dataSet.payload), dataSet.style);
-    dataSet = dataSet.payload;
+function initialization(container, dataSet, readyCallBack, callbackFunction, style) {
+    let main = structureData(addColor(dataSet), style);
     let nodes = main.nodes;
     let edges = main.edges;
     let data = {

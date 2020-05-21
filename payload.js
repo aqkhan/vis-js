@@ -126,38 +126,37 @@ let payload1 = [
 
 // new payload three
 
-let payload2 = {
-    style: {
+let style = {
         "bubbleColor": "transparent", // Add custom color to circle if no color is defined default #5BBFBA color will be selected
         "textColor": "#000", // Add text color if no textColor is added default #fff color will be selected.
         "textSize": 20, // Now you can increase/decrease the size of bubble by adding custom text size.
         "lineColor": "red", // You can add custom color to lines.
+    };
+
+payload2 = [
+    {
+        "termKey":"strategy",
+        "edges":[
+            {
+                "to":"content marketers"
+            },
+        ]
     },
-    payload: [
-        {
-            "termKey":"strategy",
-            "edges":[
-                {
-                    "to":"content marketers"
-                },
-            ]
-        },
-        {
-            "termKey":"content marketers",
-            "edges":[
-                {"to":"content marketing"},
-            ]
-        },
-        {"termKey":"content marketing",
-            "edges":[
-                {"to":"guide"},
-            ]
-        },
-        {"termKey":"guide",
-            "edges":[]
-        }
-    ]
-};
+    {
+        "termKey":"content marketers",
+        "edges":[
+            {"to":"content marketing"},
+        ]
+    },
+    {"termKey":"content marketing",
+        "edges":[
+            {"to":"guide"},
+        ]
+    },
+    {"termKey":"guide",
+        "edges":[]
+    }
+]
 
 
 // Fires when an interaction is registered on a node
